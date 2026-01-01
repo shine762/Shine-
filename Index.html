@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SHINE PRO - Prototype Testing</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root { --gold: #FFD700; --dark: #050505; --card: #121212; --green: #00ff88; --blue: #00d4ff; --red: #ff4d4d; }
+        body { background-color: var(--dark); color: white; font-family: 'Poppins', sans-serif; margin: 0; overflow-x: hidden; }
+        .app-container { width: 100%; max-width: 450px; min-height: 100vh; margin: auto; background: #000; position: relative; padding-bottom: 90px; }
+
+        /* Admin Ticker */
+        .admin-ticker { background: linear-gradient(90deg, #b8860b, #ffd700); color: black; padding: 10px 0; overflow: hidden; white-space: nowrap; font-weight: bold; font-size: 0.85rem; }
+        .ticker-text { display: inline-block; animation: marquee 25s linear infinite; }
+        @keyframes marquee { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
+
+        /* Screens */
+        .screen { display: none; padding: 20px; animation: fadeIn 0.4s ease-in-out; }
+        .screen.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        /* Header */
+        .header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 20px; border-bottom: 1px solid #222; margin-bottom: 20px; }
+        .user-profile { display: flex; align-items: center; gap: 12px; }
+        .user-profile .avatar { width: 45px; height: 45px; border-radius: 50%; background: var(--gold); display: flex; align-items: center; justify-content: center; color: black; font-weight: bold; }
+
+        /* Balance Card */
+        .balance-card { background: linear-gradient(145deg, #1a1a1a, #0a0a0a); border-radius: 25px; padding: 25px; text-align: center; border: 1px solid #333; margin-bottom: 20px; }
+        .balance-val { font-size: 2.8rem; font-family: 'Orbitron'; color: var(--gold); margin: 10px 0; }
+
+        /* --- UPDATED MINING SECTION (GOLD COIN LOOK) --- */
+        .mining-section { display: flex; flex-direction: column; align-items: center; margin: 30px 0; }
+        
+        .mining-btn { 
+            width: 180px; 
+            height: 180px; 
+            border-radius: 50%; 
+            /* Full Gold Gradient Background */
+            background: radial-gradient(circle, #ffe066 0%, #ffcc00 40%, #b8860b 100%);
+            /* Dual border for coin effect */
+            border: 4px solid #8a6d3b;
+            outline: 2px solid #ffd700;
+            cursor: pointer; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            transition: 0.3s; 
+            box-shadow: 0 0 20px rgba(184, 134, 11, 0.5), inset 0 0 15px rgba(255, 255, 255, 0.5);
+            position: relative;
+        }
+
+        /* Black SHINE Text in Center */
+        .mining-btn span {
+            color: #000;
+            font-family: 'Orbitron';
+            font-weight: 900;
+            font-size: 1.8rem;
+            letter-spacing: 2px;
+            text-shadow: 1px 1px 0px rgba(255,255,255,0.3);
+        }
+
+        .mining-btn.active { 
+            animation: pulse 2s infinite, rotateCoin 10s linear infinite; 
+            box-shadow: 0 0 40px rgba(255, 215, 0, 0.8);
+        }
+
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
+        
+        /* Subtle rotation for active coin */
+        @keyframes rotateCoin {
+            from { filter: hue-rotate(0deg); }
+            to { filter: hue-rotate(5deg); }
+        }
+
+        /* Shop & School Items */
+        .item-card { background: #1a1a1a; border-radius: 15px; padding: 15px; margin-bottom: 15px; border: 1px solid #333; }
+        .action-btn { background: var(--gold); color: black; border: none; padding: 10px 20px; border-radius: 8px; font-weight: bold; width: 100%; cursor: pointer; }
+
+        /* Nav Bar */
+        .bottom-nav { position: fixed; bottom: 0; width: 100%; max-width: 450px; background: #080808; display: flex; justify-content: space-around; padding: 15px 0; border-top: 1px solid #222; }
+        .nav-item { text-align: center; color: #555; font-size: 0.7rem; cursor: pointer; flex: 1; }
+        .nav-item i { font-size: 1.3rem; margin-bottom: 4px; display: block; }
+        .nav-item.active { color: var(--gold); }
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+
+    <div class="admin-ticker">
+        <div class="ticker-text">
+            🚀 SHINE PRO PROTOTYPE | 1 SHINE = $0.05 | 🎓 SCHOOL NOW OPEN | 🛍️ SHOP UPDATED | 📺 WATCH ADS TO EARN
+        </div>
+    </div>
+
+    <div id="home" class="screen active">
+        <div class="header">
+            <div class="user-profile">
+                <div class="avatar">S</div>
+                <div>
+                    <h4 style="margin:0;">Guest User</h4>
+                    <span style="font-size:0.6rem; color:var(--green);">● TESTING MODE</span>
+                </div>
+            </div>
+            <i class="fas fa-cog" style="color:#555;"></i>
+        </div>
+
+        <div class="balance-card">
+            <p style="margin:0; font-size:0.8rem; color:#888;">MINED BALANCE</p>
+            <div class="balance-val" id="balance">0.00000</div>
+            <p style="margin:0; font-size:0.8rem; color:var(--green);">⚡ 0.25 SHINE/hr</p>
+        </div>
+
+        <div class="mining-section">
+            <div class="mining-btn" id="mine-btn" onclick="startMining()">
+                <span>SHINE</span>
+            </div>
+            <h2 id="timer-text" style="font-family:'Orbitron'; margin-top:15px; color: var(--gold);">START</h2>
+        </div>
+
+        <div class="item-card" style="display:flex; justify-content:space-between; align-items:center;">
+            <div>
+                <b>Watch Product Video</b><br>
+                <small style="color:#888;">Instant +0.05 Shine</small>
+            </div>
+            <button onclick="watchAd()" style="background:var(--green); border:none; padding:8px 15px; border-radius:5px; font-weight:bold;">WATCH</button>
+        </div>
+    </div>
+
+    <div id="shop" class="screen">
+        <h2 style="font-family:'Orbitron'; color:var(--gold);">🛍️ SHOP</h2>
+        <div class="item-card">
+            <h4>Shine Official T-Shirt</h4>
+            <p style="color:var(--gold);">500 SHINE</p>
+            <button class="action-btn" onclick="alert('Balance needed!')">BUY NOW</button>
+        </div>
+    </div>
+
+    <div id="school" class="screen">
+        <h2 style="font-family:'Orbitron'; color:var(--gold);">🎓 SHINE SCHOOL</h2>
+        <div class="item-card">
+            <p>Ask a question to Shine AI:</p>
+            <textarea style="width:100%; background:#000; color:white; border:1px solid #333; padding:10px; border-radius:10px; box-sizing:border-box;" rows="3" placeholder="How to earn more SHINE?"></textarea>
+            <button class="action-btn" style="margin-top:10px;" onclick="askAI()">ASK AI</button>
+        </div>
+        <div id="ai-output" style="color:#888; font-size:0.8rem; padding:10px;"></div>
+    </div>
+
+    <div id="wallet" class="screen">
+        <h2 style="font-family:'Orbitron'; color:var(--gold);">💰 WALLET</h2>
+        <div class="balance-card">
+            <p>Available Balance</p>
+            <h1 id="w-balance" style="color:var(--green);">0.00</h1>
+            <button class="action-btn">WITHDRAW (Min 100)</button>
+        </div>
+    </div>
+
+    <div id="game" class="screen">
+        <h2 style="font-family:'Orbitron'; color:var(--gold);">🎮 GAMES</h2>
+        <div style="text-align:center; padding:50px;">
+            <i class="fas fa-gamepad" style="font-size:4rem; opacity:0.2;"></i>
+            <p>Games will be added in final version.</p>
+        </div>
+    </div>
+
+    <div class="bottom-nav">
+        <div class="nav-item active" onclick="showTab('home', this)"><i class="fas fa-hammer"></i>Home</div>
+        <div class="nav-item" onclick="showTab('shop', this)"><i class="fas fa-shopping-bag"></i>Shop</div>
+        <div class="nav-item" onclick="showTab('school', this)"><i class="fas fa-graduation-cap"></i>School</div>
+        <div class="nav-item" onclick="showTab('wallet', this)"><i class="fas fa-wallet"></i>Wallet</div>
+        <div class="nav-item" onclick="showTab('game', this)"><i class="fas fa-gamepad"></i>Game</div>
+    </div>
+
+</div>
+
+<script>
+    let balance = 0.0000;
+    let isMining = false;
+    let miningEndTime = null;
+
+    function startMining() {
+        if (isMining) return;
+        isMining = true;
+        miningEndTime = new Date().getTime() + (24 * 60 * 60 * 1000);
+        document.getElementById('mine-btn').classList.add('active');
+        alert("Mining Started!");
+    }
+
+    function watchAd() {
+        alert("Playing Video...");
+        setTimeout(() => {
+            balance += 0.05;
+            updateUI();
+            alert("Reward added.");
+        }, 2000);
+    }
+
+    function askAI() {
+        document.getElementById('ai-output').innerText = "Thinking...";
+    }
+
+    function showTab(id, el) {
+        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        el.classList.add('active');
+        updateUI();
+    }
+
+    function updateUI() {
+        document.getElementById('balance').innerText = balance.toFixed(5);
+        document.getElementById('w-balance').innerText = balance.toFixed(2);
+    }
+
+    setInterval(() => {
+        if (isMining && miningEndTime) {
+            let now = new Date().getTime();
+            let diff = miningEndTime - now;
+            if (diff > 0) {
+                balance += (0.25 / 3600);
+                document.getElementById('timer-text').innerText = formatTime(diff);
+                updateUI();
+            } else {
+                isMining = false;
+                document.getElementById('timer-text').innerText = "START";
+                document.getElementById('mine-btn').classList.remove('active');
+            }
+        }
+    }, 1000);
+
+    function formatTime(ms) {
+        let h = Math.floor(ms / 3600000);
+        let m = Math.floor((ms % 3600000) / 60000);
+        let s = Math.floor((ms % 60000) / 1000);
+        return `${h}h ${m}m ${s}s`;
+    }
+</script>
+</body>
+</html>
